@@ -26,3 +26,13 @@ argumentparse.add_argument("-c", "--confidence", type=float, default=0.5,
 	help="minimum probability to filter weak detections")
 args = vars(argumentparse.parse_args())
 
+# Load the stored face detector model
+print("[INFO] loading face detector...")
+protoPath = os.path.sep.join([args["detector"], "deploy.prototxt"])
+modelPath = os.path.sep.join([args["detector"],
+	"res10_300x300_ssd_iter_140000.caffemodel"])
+detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
+# Load the corresponding face embeddings
+print("[INFO] loading face recognizer...")
+embedder = cv2.dnn.readNetFromTorch(args["embedding_model"])
+
